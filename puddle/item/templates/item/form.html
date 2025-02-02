@@ -9,8 +9,14 @@
 <form method="post" action="." enctype="multipart/form-data">
     {% csrf_token %}
 
+
     <div class="space-y-4">
-        {{ form.as_p }}
+        {{form.category}}
+        {{form.new_category}}
+        {{ form.name }}
+        {{ form.description }}
+        {{ form.price }}
+        {{ form.image }}
     </div>
 
     {% if form.errors or form.non_field_errors %}

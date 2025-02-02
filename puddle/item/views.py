@@ -42,10 +42,18 @@ def new(request):
         form = NewItemForm(request.POST, request.FILES)
 
         if form.is_valid():
-            item = form.save(commit=False)
-            item.created_by = request.user
-            item.save()
+            category = form.cleaned_data.get('category')
+            new_category = form.cleaned_data.get('new_category')
 
+            # If a new category is provided, create it
+            if new_category:
+                category, created = Category.objects.get_or_create(name=new_category)
+
+            item = form.save(commit=False)
+            item.category = category  # Assign the selected/created category
+            item.created_by = request.user  # Assign the logged-in user
+            item.save()
+            
             return redirect('item:detail', pk=item.id)
     else:
         form = NewItemForm()
